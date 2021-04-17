@@ -12,7 +12,6 @@ import com.androidapp.appcleanarch.model.data.DataModel
 import com.androidapp.appcleanarch.model.datasource.retrofit.RetrofitImplementation
 import com.androidapp.appcleanarch.presenter.Presenter
 import com.androidapp.appcleanarch.view.base.ActivityBase
-import com.androidapp.appcleanarch.view.base.IView
 import com.androidapp.appcleanarch.view.main.adapter.AdapterMain
 import com.androidapp.appcleanarch.view.main.adapter.OnListenerItemClick
 import com.androidapp.appcleanarch.view.main.fragment.FragmentDialogSearch
@@ -29,7 +28,7 @@ class ActivityMain : ActivityBase<AppState>() {
     private val compositeDisposable = CompositeDisposable()
     private val iterator = RetrofitImplementation()
 
-    override fun createPresenter(): Presenter<AppState, IView> {
+    override fun createPresenter(): Presenter {
         return PresenterMain()
     }
 
@@ -45,16 +44,6 @@ class ActivityMain : ActivityBase<AppState>() {
             FragmentDialogSearch.newInstance()
                 .show(supportFragmentManager, FragmentDialogSearch.TAG)
         }
-//        compositeDisposable.add(
-//            iterator.getDataRetrofit("word")
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe({
-//                    adapter.setData(it)
-//                }, {
-//                    Toast.makeText(this, "${it.message}", Toast.LENGTH_SHORT).show()
-//                })
-//        )
     }
 
     override fun renderData(appState: AppState) {
