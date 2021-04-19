@@ -3,6 +3,8 @@ package com.androidapp.appcleanarch.view.main.activity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -10,26 +12,24 @@ import com.androidapp.appcleanarch.R
 import com.androidapp.appcleanarch.model.data.AppState
 import com.androidapp.appcleanarch.model.data.DataModel
 import com.androidapp.appcleanarch.model.datasource.retrofit.RetrofitImplementation
-import com.androidapp.appcleanarch.presenter.Presenter
-import com.androidapp.appcleanarch.view.base.ActivityBase
 import com.androidapp.appcleanarch.view.main.adapter.AdapterMain
 import com.androidapp.appcleanarch.view.main.adapter.OnListenerItemClick
 import com.androidapp.appcleanarch.view.main.fragment.FragmentDialogSearch
 import com.androidapp.appcleanarch.view.main.fragment.OnSearchClickListener
-import com.androidapp.appcleanarch.view.presenter.PresenterMain
+import com.androidapp.appcleanarch.view.viewModel.ViewModelMain
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.view_error.*
 
-class ActivityMain : ActivityBase<AppState>() {
+class ActivityMain : AppCompatActivity() {
 
     private val adapter: AdapterMain by lazy { AdapterMain(onItemClick) }
     private lateinit var recyclerView: RecyclerView
     private val compositeDisposable = CompositeDisposable()
     private val iterator = RetrofitImplementation()
 
-    override fun createPresenter(): Presenter {
-        return PresenterMain()
+    private val viewModelMain by lazy {
+        ViewModelProvider(this).get(ViewModelMain::class.java)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,9 +44,13 @@ class ActivityMain : ActivityBase<AppState>() {
             FragmentDialogSearch.newInstance()
                 .show(supportFragmentManager, FragmentDialogSearch.TAG)
         }
+
+        viewModelMain.subscriberLiveData().observe(this, {
+            renderData(it)
+        })
     }
 
-    override fun renderData(appState: AppState) {
+    private fun renderData(appState: AppState) {
         when (appState) {
             is AppState.Success -> {
                 val dataModel = appState.data
@@ -76,7 +80,7 @@ class ActivityMain : ActivityBase<AppState>() {
         showViewError()
         tv_error.text = error ?: getString(R.string.undefined_error)
         btn_reload.setOnClickListener {
-            presenter.getData("hi", true)
+            viewModelMain.getData("hi", true)
         }
     }
 
@@ -100,7 +104,7 @@ class ActivityMain : ActivityBase<AppState>() {
 
     val searchClick = object : OnSearchClickListener {
         override fun onClick(word: String) {
-            presenter.getData(word, true)
+            viewModelMain.getData(word, true)
         }
     }
 
