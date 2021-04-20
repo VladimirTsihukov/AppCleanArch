@@ -3,15 +3,16 @@ package com.androidapp.appcleanarch.view.main.activity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.androidapp.appcleanarch.App
 import com.androidapp.appcleanarch.R
 import com.androidapp.appcleanarch.model.data.AppState
 import com.androidapp.appcleanarch.model.data.DataModel
 import com.androidapp.appcleanarch.model.datasource.retrofit.RetrofitImplementation
+import com.androidapp.appcleanarch.view.base.ActivityBas
 import com.androidapp.appcleanarch.view.main.adapter.AdapterMain
 import com.androidapp.appcleanarch.view.main.adapter.OnListenerItemClick
 import com.androidapp.appcleanarch.view.main.fragment.FragmentDialogSearch
@@ -20,21 +21,28 @@ import com.androidapp.appcleanarch.view.viewModel.ViewModelMain
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.view_error.*
+import javax.inject.Inject
 
-class ActivityMain : AppCompatActivity() {
+class ActivityMain : ActivityBas<AppState>() {
+
+    @Inject
+    internal lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private val adapter: AdapterMain by lazy { AdapterMain(onItemClick) }
     private lateinit var recyclerView: RecyclerView
     private val compositeDisposable = CompositeDisposable()
     private val iterator = RetrofitImplementation()
 
-    private val viewModelMain by lazy {
-        ViewModelProvider(this).get(ViewModelMain::class.java)
+    override val viewModel by lazy {
+        //ViewModelProvider(this).get(ViewModelMain::class.java)
+        ViewModelProvider(this, viewModelFactory).get(ViewModelMain::class.java)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        App.component.inject(this)
 
         recyclerView = findViewById(R.id.main_rec_view)
         recyclerView.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
@@ -45,12 +53,12 @@ class ActivityMain : AppCompatActivity() {
                 .show(supportFragmentManager, FragmentDialogSearch.TAG)
         }
 
-        viewModelMain.subscriberLiveData().observe(this, {
+        viewModel.subscriberLiveData().observe(this, {
             renderData(it)
         })
     }
 
-    private fun renderData(appState: AppState) {
+    override fun renderData(appState: AppState) {
         when (appState) {
             is AppState.Success -> {
                 val dataModel = appState.data
@@ -80,7 +88,7 @@ class ActivityMain : AppCompatActivity() {
         showViewError()
         tv_error.text = error ?: getString(R.string.undefined_error)
         btn_reload.setOnClickListener {
-            viewModelMain.getData("hi", true)
+            viewModel.getData("hi", true)
         }
     }
 
@@ -104,7 +112,7 @@ class ActivityMain : AppCompatActivity() {
 
     val searchClick = object : OnSearchClickListener {
         override fun onClick(word: String) {
-            viewModelMain.getData(word, true)
+            viewModel.getData(word, true)
         }
     }
 
