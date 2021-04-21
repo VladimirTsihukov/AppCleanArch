@@ -34,7 +34,6 @@ class ActivityMain : ActivityBas<AppState>() {
     private val iterator = RetrofitImplementation()
 
     override val viewModel by lazy {
-        //ViewModelProvider(this).get(ViewModelMain::class.java)
         ViewModelProvider(this, viewModelFactory).get(ViewModelMain::class.java)
     }
 
