@@ -3,11 +3,9 @@ package com.androidapp.appcleanarch.view.main.activity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.androidapp.appcleanarch.App
 import com.androidapp.appcleanarch.R
 import com.androidapp.appcleanarch.model.data.AppState
 import com.androidapp.appcleanarch.model.data.DataModel
@@ -21,27 +19,27 @@ import com.androidapp.appcleanarch.view.viewModel.ViewModelMain
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.view_error.*
-import javax.inject.Inject
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class ActivityMain : ActivityBas<AppState>() {
 
-    @Inject
-    internal lateinit var viewModelFactory: ViewModelProvider.Factory
+    override val viewModel by viewModel<ViewModelMain>()
+
+//    @Inject
+//    internal lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private val adapter: AdapterMain by lazy { AdapterMain(onItemClick) }
     private lateinit var recyclerView: RecyclerView
     private val compositeDisposable = CompositeDisposable()
     private val iterator = RetrofitImplementation()
 
-    override val viewModel by lazy {
-        ViewModelProvider(this, viewModelFactory).get(ViewModelMain::class.java)
-    }
+//    override val viewModel by lazy {
+//        ViewModelProvider(this, viewModelFactory).get(ViewModelMain::class.java)
+//    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        App.component.inject(this)
 
         recyclerView = findViewById(R.id.main_rec_view)
         recyclerView.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))

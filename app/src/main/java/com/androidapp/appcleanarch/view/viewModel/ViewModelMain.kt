@@ -5,9 +5,8 @@ import com.androidapp.appcleanarch.model.data.AppState
 import com.androidapp.appcleanarch.view.base.ViewModelBase
 import com.androidapp.appcleanarch.view.interactor.InteractorMain
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-class ViewModelMain @Inject constructor(
+class ViewModelMain (
     private val interactor: InteractorMain
 ) : ViewModelBase<AppState>() {
 
