@@ -24,4 +24,9 @@ class ViewModelMain (
     override fun handleError(error: Throwable) {
         liveDataForView.postValue(AppState.Error(error))
     }
+
+    override fun onCleared() {
+        liveDataForView.value = AppState.Success(null)
+        super.onCleared()
+    }
 }

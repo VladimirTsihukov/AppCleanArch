@@ -10,6 +10,7 @@ import com.androidapp.appcleanarch.R
 import com.androidapp.appcleanarch.model.data.AppState
 import com.androidapp.appcleanarch.model.data.DataModel
 import com.androidapp.appcleanarch.model.datasource.retrofit.RetrofitImplementation
+import com.androidapp.appcleanarch.utils.network.isOnline
 import com.androidapp.appcleanarch.view.base.ActivityBas
 import com.androidapp.appcleanarch.view.main.adapter.AdapterMain
 import com.androidapp.appcleanarch.view.main.adapter.OnListenerItemClick
@@ -25,17 +26,10 @@ class ActivityMain : ActivityBas<AppState>() {
 
     override val viewModel by viewModel<ViewModelMain>()
 
-//    @Inject
-//    internal lateinit var viewModelFactory: ViewModelProvider.Factory
-
     private val adapter: AdapterMain by lazy { AdapterMain(onItemClick) }
     private lateinit var recyclerView: RecyclerView
     private val compositeDisposable = CompositeDisposable()
     private val iterator = RetrofitImplementation()
-
-//    override val viewModel by lazy {
-//        ViewModelProvider(this, viewModelFactory).get(ViewModelMain::class.java)
-//    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,11 +53,11 @@ class ActivityMain : ActivityBas<AppState>() {
         when (appState) {
             is AppState.Success -> {
                 val dataModel = appState.data
-                if (dataModel.isEmpty()) {
+                if (dataModel?.isEmpty() == true) {
                     showErrorScreen(getString(R.string.empty_server_response_on_success))
                 } else {
                     showViewSuccess()
-                    adapter.setData(dataModel)
+                    dataModel?.let { adapter.setData(it) }
                 }
             }
             is AppState.Loading -> {
@@ -109,7 +103,11 @@ class ActivityMain : ActivityBas<AppState>() {
 
     val searchClick = object : OnSearchClickListener {
         override fun onClick(word: String) {
-            viewModel.getData(word, true)
+            if (isOnline(this@ActivityMain)) {
+                viewModel.getData(word, true)
+            } else {
+                showAlertDialog()
+            }
         }
     }
 
