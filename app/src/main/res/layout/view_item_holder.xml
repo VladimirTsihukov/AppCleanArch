@@ -33,8 +33,8 @@
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_item_header"
                 style="@style/HeaderTextStyle"
-                android:text="@string/header"
                 android:layout_marginStart="@dimen/margin_small"
+                android:text="@string/header"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/img_word" />
 
@@ -49,12 +49,12 @@
                 android:id="@+id/tv_item_translation"
                 style="@style/BaseTextStyle"
                 android:layout_width="0dp"
-                android:text="@string/header"
                 android:layout_marginStart="@dimen/margin_small"
+                android:text="@string/header"
+                app:layout_constraintEnd_toStartOf="@+id/guideline"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_item_transcription"
-                app:layout_constraintEnd_toStartOf="@+id/guideline"
-                tools:text="Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."/>
+                tools:text="Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline"
@@ -67,13 +67,13 @@
                 android:id="@+id/img_play"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="invisible"
-                tools:visibility="visible"
                 android:src="@drawable/ic_baseline_play_arrow_48"
+                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/guideline"
-                app:layout_constraintTop_toBottomOf="@+id/img_word" />
+                app:layout_constraintTop_toBottomOf="@+id/img_word"
+                tools:visibility="visible" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/img_stop"

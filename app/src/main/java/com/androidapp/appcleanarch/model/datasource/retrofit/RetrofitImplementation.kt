@@ -1,6 +1,7 @@
 package com.androidapp.appcleanarch.model.datasource.retrofit
 
 import com.androidapp.appcleanarch.model.data.DataModel
+import com.androidapp.appcleanarch.model.datasource.DataSource
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import io.reactivex.Single
 import okhttp3.Interceptor
@@ -9,9 +10,9 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class RetrofitImplementation {
+class RetrofitImplementation : DataSource<List<DataModel>> {
 
-    fun getDataRetrofit(word : String) : Single<List<DataModel>> {
+    override fun getData(word : String) : Single<List<DataModel>> {
         return getService(BaseInterceptor.interceptor).search(word)
     }
 

@@ -8,5 +8,5 @@ class DataSourceRemote (
     private val remoteProvider : RetrofitImplementation = RetrofitImplementation()
         ) : DataSource<List<DataModel>> {
 
-    override fun getData(word: String): Single<List<DataModel>> = remoteProvider.getDataRetrofit(word)
+    override fun getData(word: String): Single<List<DataModel>> = remoteProvider.getData(word)
 }
