@@ -3,7 +3,7 @@ package com.androidapp.appcleanarch.view.base
 import androidx.appcompat.app.AppCompatActivity
 import com.androidapp.appcleanarch.model.data.AppState
 import com.androidapp.appcleanarch.utils.network.isOnline
-import com.androidapp.appcleanarch.view.main.fragment.FragmentAlertDialogNetWorkStatus
+import com.androidapp.appcleanarch.view.main.fragment.fragmentDialog.FragmentAlertDialogNetWorkStatus
 
 abstract class ActivityBas<T : AppState> : AppCompatActivity() {
 

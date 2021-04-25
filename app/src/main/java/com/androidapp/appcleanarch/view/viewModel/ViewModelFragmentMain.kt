@@ -6,7 +6,7 @@ import com.androidapp.appcleanarch.view.base.ViewModelBase
 import com.androidapp.appcleanarch.view.interactor.InteractorMain
 import kotlinx.coroutines.launch
 
-class ViewModelMain (
+class ViewModelFragmentMain (
     private val interactor: InteractorMain
 ) : ViewModelBase<AppState>() {
 

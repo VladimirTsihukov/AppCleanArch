@@ -1,4 +1,4 @@
-package com.androidapp.appcleanarch.view.main.fragment
+package com.androidapp.appcleanarch.view.main.fragment.fragmentDialog
 
 import android.os.Bundle
 import android.view.LayoutInflater

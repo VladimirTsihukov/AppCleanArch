@@ -8,7 +8,7 @@ import com.androidapp.appcleanarch.model.datasource.room.RoomDataBaseImplementat
 import com.androidapp.appcleanarch.model.repository.Repository
 import com.androidapp.appcleanarch.model.repository.RepositoryImplementation
 import com.androidapp.appcleanarch.view.interactor.InteractorMain
-import com.androidapp.appcleanarch.view.viewModel.ViewModelMain
+import com.androidapp.appcleanarch.view.viewModel.ViewModelFragmentMain
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -30,7 +30,7 @@ val mainScreen = module {
     }
 
     viewModel {
-        ViewModelMain(get())
+        ViewModelFragmentMain(get())
     }
 }
 
