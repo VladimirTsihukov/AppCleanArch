@@ -2,7 +2,6 @@ package com.androidapp.appcleanarch.view.main.fragment.fragmentUI
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -110,7 +109,12 @@ class FragmentMain : FragmentBase<AppState>(R.layout.fragment_main) {
 
     private val onItemClick = object : OnListenerItemClick {
         override fun onItemClick(dataModel: DataModel) {
-            Toast.makeText(activityMain, dataModel.textHeader, Toast.LENGTH_SHORT).show()
+            activity?.let {
+                it.supportFragmentManager.beginTransaction()
+                    .addToBackStack(null)
+                    .add(R.id.container, FragmentDetailWord.newInstance(dataModel), FragmentDetailWord.TAG)
+                    .commit()
+            }
         }
     }
 
