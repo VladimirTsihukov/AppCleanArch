@@ -3,7 +3,6 @@ package com.androidapp.appcleanarch.view.interactor
 import com.androidapp.appcleanarch.model.data.AppState
 import com.androidapp.appcleanarch.model.data.DataModel
 import com.androidapp.appcleanarch.model.repository.Repository
-import com.androidapp.appcleanarch.presenter.Interactor
 
 class InteractorMain (
     private val remoteRepository: Repository<List<DataModel>>,
