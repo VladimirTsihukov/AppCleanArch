@@ -4,24 +4,29 @@ import androidx.lifecycle.LiveData
 import com.androidapp.appcleanarch.model.data.AppState
 import com.androidapp.appcleanarch.view.base.ViewModelBase
 import com.androidapp.appcleanarch.view.interactor.InteractorMain
-import javax.inject.Inject
+import kotlinx.coroutines.launch
 
-class ViewModelMain @Inject constructor(
+class ViewModelMain (
     private val interactor: InteractorMain
 ) : ViewModelBase<AppState>() {
 
+    fun subscriberLiveData(): LiveData<AppState> = liveDataForView
+
     override fun getData(word: String, isOnline: Boolean) {
-       compositeDisposable.add(
-           interactor.getDataInteract(word, true)
-               .subscribeOn(schedulerProvider.io())
-               .observeOn(schedulerProvider.ui())
-               .subscribe({
-                   liveDataForView.value = it
-               }, {
-                   liveDataForView.value = AppState.Error(it)
-               })
-       )
+        liveDataForView.value = AppState.Loading(null)
+        cancelJob()
+
+        viewModelCoroutine.launch {
+            liveDataForView.postValue(interactor.getDataInteract(word, true))
+        }
     }
 
-    fun subscriberLiveData() : LiveData<AppState> = liveDataForView
+    override fun handleError(error: Throwable) {
+        liveDataForView.postValue(AppState.Error(error))
+    }
+
+    override fun onCleared() {
+        liveDataForView.value = AppState.Success(null)
+        super.onCleared()
+    }
 }

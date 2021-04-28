@@ -1,21 +1,16 @@
 package com.androidapp.appcleanarch
 
 import android.app.Application
-import com.androidapp.appcleanarch.di.AppComponent
-import com.androidapp.appcleanarch.di.DaggerAppComponent
+import com.androidapp.appcleanarch.diKoin.application
+import com.androidapp.appcleanarch.diKoin.mainScreen
+import org.koin.core.context.startKoin
 
 class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        val component = DaggerAppComponent.builder()
-            .appContext(this)
-            .build()
-
-        App.component = component
-    }
-
-    companion object {
-        lateinit var component: AppComponent
+        startKoin {
+           modules(listOf(application, mainScreen))
+        }
     }
 }

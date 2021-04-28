@@ -3,19 +3,32 @@ package com.androidapp.appcleanarch.view.base
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.androidapp.appcleanarch.model.data.AppState
-import com.androidapp.appcleanarch.rx.SchedulerProvider
-import io.reactivex.disposables.CompositeDisposable
+import kotlinx.coroutines.*
 
 abstract class ViewModelBase<T : AppState>(
     protected val liveDataForView: MutableLiveData<T> = MutableLiveData(),
-    protected val compositeDisposable: CompositeDisposable = CompositeDisposable(),
-    protected val schedulerProvider: SchedulerProvider = SchedulerProvider()
 ) : ViewModel() {
 
     abstract fun getData(word: String, isOnline: Boolean)
 
+    abstract fun handleError(error: Throwable)
+
+    protected val viewModelCoroutine = CoroutineScope(
+        Dispatchers.IO
+                + SupervisorJob()   //независимое выполнения корутин, если какая-нибудь корутина
+                                    // упадет с ошибкой остальные будут выполняться нормально
+
+                + CoroutineExceptionHandler { _, throwable ->  //перехватываем ошибки
+            handleError(throwable)
+        }
+    )
+
+    fun cancelJob() {
+        viewModelCoroutine.coroutineContext.cancelChildren()
+    }
+
     override fun onCleared() {
         super.onCleared()
-        compositeDisposable.clear()
+        cancelJob()
     }
 }
