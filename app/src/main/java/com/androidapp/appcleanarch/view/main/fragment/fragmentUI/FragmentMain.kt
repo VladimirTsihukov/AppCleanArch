@@ -6,14 +6,16 @@ import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.androidapp.appcleanarch.App
 import com.androidapp.appcleanarch.R
 import com.androidapp.appcleanarch.model.data.AppState
-import com.androidapp.appcleanarch.model.data.DataModel
 import com.androidapp.appcleanarch.model.datasource.retrofit.RetrofitImplementation
+import com.androidapp.appcleanarch.model.datasource.room.HistoryDataWord
+import com.androidapp.appcleanarch.utils.convertListDataModelOtEntity
 import com.androidapp.appcleanarch.utils.network.isOnline
 import com.androidapp.appcleanarch.view.base.FragmentBase
 import com.androidapp.appcleanarch.view.main.adapter.AdapterMain
-import com.androidapp.appcleanarch.view.main.adapter.OnListenerItemClick
+import com.androidapp.appcleanarch.view.main.adapter.OnListenerItemClickAdapterMain
 import com.androidapp.appcleanarch.view.main.fragment.fragmentDialog.FragmentDialogSearch
 import com.androidapp.appcleanarch.view.viewModel.ViewModelFragmentMain
 import io.reactivex.disposables.CompositeDisposable
@@ -34,6 +36,9 @@ class FragmentMain : FragmentBase<AppState>(R.layout.fragment_main) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        initToolBar()
+
         recyclerView = view.findViewById(R.id.main_rec_view)
         recyclerView.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
         recyclerView.adapter = adapter
@@ -50,6 +55,24 @@ class FragmentMain : FragmentBase<AppState>(R.layout.fragment_main) {
         })
     }
 
+    private fun initToolBar() {
+        tool_bar_fragment_main.inflateMenu(R.menu.menu_fragment_main)
+        tool_bar_fragment_main.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.menu_fragment_main_history -> {
+                    activityMain?.let {
+                        it.supportFragmentManager.beginTransaction()
+                            .addToBackStack(null)
+                            .add(R.id.container, FragmentHistory.newInstance(), FragmentHistory.TAG)
+                            .commit()
+                    }
+                    return@setOnMenuItemClickListener true
+                }
+                else -> true
+            }
+        }
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         activityMain = activity
@@ -63,7 +86,7 @@ class FragmentMain : FragmentBase<AppState>(R.layout.fragment_main) {
                     showErrorScreen(getString(R.string.empty_server_response_on_success))
                 } else {
                     showViewSuccess()
-                    dataModel?.let { adapter.setData(it) }
+                    dataModel?.let { adapter.setData(convertListDataModelOtEntity(it)) }
                 }
             }
             is AppState.Loading -> {
@@ -85,7 +108,7 @@ class FragmentMain : FragmentBase<AppState>(R.layout.fragment_main) {
         showViewError()
         tv_error.text = error ?: getString(R.string.undefined_error)
         btn_reload.setOnClickListener {
-            viewModel.getData("hi", true)
+            viewModel.getData("hi", isOnline(App.instance.applicationContext))
         }
     }
 
@@ -107,21 +130,25 @@ class FragmentMain : FragmentBase<AppState>(R.layout.fragment_main) {
         layout_error.visibility = View.VISIBLE
     }
 
-    private val onItemClick = object : OnListenerItemClick {
-        override fun onItemClick(dataModel: DataModel) {
+    private val onItemClick = object : OnListenerItemClickAdapterMain {
+        override fun onItemClick(dataModel: HistoryDataWord) {
             activity?.let {
                 it.supportFragmentManager.beginTransaction()
                     .addToBackStack(null)
-                    .add(R.id.container, FragmentDetailWord.newInstance(dataModel), FragmentDetailWord.TAG)
+                    .add(
+                        R.id.container,
+                        FragmentDetailWord.newInstance(dataModel),
+                        FragmentDetailWord.TAG
+                    )
                     .commit()
             }
         }
     }
 
-    fun searchClickInFragmentDialog (word: String) {
+    fun searchClickInFragmentDialog(word: String) {
         activityMain?.let {
             if (isOnline(it)) {
-                viewModel.getData(word, true)
+                viewModel.getData(word, isOnline(App.instance.applicationContext))
             } else {
                 showAlertDialog()
             }

@@ -6,19 +6,19 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import com.androidapp.appcleanarch.R
-import com.androidapp.appcleanarch.model.data.DataModel
+import com.androidapp.appcleanarch.model.datasource.room.HistoryDataWord
 import com.androidapp.appcleanarch.utils.URL_ADD
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.fragment_detail_word.*
 
 class FragmentDetailWord : Fragment(R.layout.fragment_detail_word) {
 
-    private var dataModel: DataModel? = null
+    private var dataModel: HistoryDataWord? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initToolBar()
-        dataModel = arguments?.getParcelable(KEY_PARCELABLE) as? DataModel
+        dataModel = arguments?.getParcelable(KEY_PARCELABLE) as? HistoryDataWord
         dataModel?.let {
             viewInit(it)
         }
@@ -30,20 +30,20 @@ class FragmentDetailWord : Fragment(R.layout.fragment_detail_word) {
             activity?.supportFragmentManager?.popBackStack()
         }
     }
-    
-    private fun viewInit(data: DataModel) {
+
+    private fun viewInit(data: HistoryDataWord) {
         img_play.visibility = View.INVISIBLE
         img_stop.visibility = View.INVISIBLE
 
-        tv_item_header.text = data.textHeader
+        tv_word.text = data.textHeader
 
-        tv_item_transcription.text =
+        tv_transcription.text =
             context?.getString(R.string.transcription).let {
-                String.format(it ?: "", data.meanings[0].transcription)
+                String.format(it ?: "", data.transcription)
             }
-        tv_item_translation.text = data.meanings[0].translation?.translation
-        data.meanings[0].imageUrl?.let { setImg(it) }
-        data.meanings[0].soundUrl?.let { workSoundUrl(it) }
+        tv_translation.text = data.translation
+        data.imageUrl?.let { setImg(it) }
+        data.soundUrl?.let { workSoundUrl(it) }
     }
 
     private fun setImg(imgUrl: String) {
@@ -83,7 +83,7 @@ class FragmentDetailWord : Fragment(R.layout.fragment_detail_word) {
     }
 
     companion object {
-        fun newInstance(data: DataModel): FragmentDetailWord {
+        fun newInstance(data: HistoryDataWord): FragmentDetailWord {
             val args = Bundle()
             args.putParcelable(KEY_PARCELABLE, data)
             return FragmentDetailWord().apply { arguments = args }

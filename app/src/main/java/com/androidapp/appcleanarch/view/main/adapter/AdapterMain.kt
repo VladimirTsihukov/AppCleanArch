@@ -5,15 +5,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.androidapp.appcleanarch.R
-import com.androidapp.appcleanarch.model.data.DataModel
-import kotlinx.android.synthetic.main.view_item_holder.view.*
+import com.androidapp.appcleanarch.model.datasource.room.HistoryDataWord
+import kotlinx.android.synthetic.main.view_item_holder_word.view.*
 
-class AdapterMain(private val onClickItem: OnListenerItemClick) :
+class AdapterMain(private val onClickItemAdapterMain: OnListenerItemClickAdapterMain) :
     RecyclerView.Adapter<AdapterMain.HolderMain>() {
 
-    private var listData: List<DataModel> = mutableListOf()
+    private var listData: List<HistoryDataWord> = mutableListOf()
 
-    fun setData(data: List<DataModel>) {
+    fun setData(data: List<HistoryDataWord>) {
         listData = data
         notifyDataSetChanged()
     }
@@ -21,7 +21,7 @@ class AdapterMain(private val onClickItem: OnListenerItemClick) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HolderMain {
         return HolderMain(
             LayoutInflater.from(parent.context).inflate(
-                R.layout.view_item_holder,
+                R.layout.view_item_holder_word,
                 parent,
                 false
             )
@@ -38,12 +38,13 @@ class AdapterMain(private val onClickItem: OnListenerItemClick) :
 
         init {
             itemView.setOnClickListener {
-                onClickItem.onItemClick(listData[layoutPosition])
+                onClickItemAdapterMain.onItemClick(listData[layoutPosition])
             }
         }
 
-        fun onBind(data: DataModel) {
-            itemView.tv_item_header.text = data.textHeader
+        fun onBind(data: HistoryDataWord) {
+            itemView.tv_word.text = data.textHeader
+            itemView.tv_word_translation.text = data.translation
         }
     }
 }

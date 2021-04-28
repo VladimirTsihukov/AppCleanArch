@@ -10,13 +10,10 @@
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/tool_bar_fragment_detail"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/purple_500"
+        style="@style/MyToolbar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:title="@string/word_description"
-        app:titleTextColor="@color/white" />
+        app:title="@string/word_description" />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/img_word"
@@ -30,7 +27,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tool_bar_fragment_detail" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_item_header"
+        android:id="@+id/tv_word"
         style="@style/HeaderTextStyle"
         android:layout_marginStart="@dimen/margin_small"
         android:text="@string/header"
@@ -38,21 +35,21 @@
         app:layout_constraintTop_toBottomOf="@id/img_word" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_item_transcription"
+        android:id="@+id/tv_transcription"
         style="@style/Transcription"
-        app:layout_constraintStart_toStartOf="@+id/tv_item_header"
-        app:layout_constraintTop_toBottomOf="@+id/tv_item_header"
+        app:layout_constraintStart_toStartOf="@+id/tv_word"
+        app:layout_constraintTop_toBottomOf="@+id/tv_word"
         tools:text="[header]" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_item_translation"
+        android:id="@+id/tv_translation"
         style="@style/BaseTextStyle"
         android:layout_width="0dp"
         android:layout_marginStart="@dimen/margin_small"
         android:text="@string/header"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_item_transcription"
+        app:layout_constraintTop_toBottomOf="@id/tv_transcription"
         tools:text="Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." />
 
     <androidx.constraintlayout.widget.Guideline

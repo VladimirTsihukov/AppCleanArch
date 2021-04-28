@@ -6,7 +6,7 @@ import com.androidapp.appcleanarch.view.base.ViewModelBase
 import com.androidapp.appcleanarch.view.interactor.InteractorMain
 import kotlinx.coroutines.launch
 
-class ViewModelFragmentMain (
+class ViewModelFragmentMain(
     private val interactor: InteractorMain
 ) : ViewModelBase<AppState>() {
 
@@ -17,7 +17,8 @@ class ViewModelFragmentMain (
         cancelJob()
 
         viewModelCoroutine.launch {
-            liveDataForView.postValue(interactor.getDataInteract(word, true))
+            val result = interactor.getDataInteract(word, isOnline)
+            liveDataForView.postValue(result)
         }
     }
 

@@ -3,15 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_margin="@dimen/margin_small"
     android:orientation="horizontal">
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_item_header"
+        android:id="@+id/tv_word"
         style="@style/HeaderTextStyle"
         android:layout_marginStart="@dimen/margin_small"
         android:text="@string/header"
-        android:padding="@dimen/margin_xx_small"
+        android:paddingTop="@dimen/margin_xx_small"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -19,7 +20,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_baseline_arrow_forward_24"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_word_translation"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="@id/tv_item_header"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_word_translation"
+        style="@style/BaseTextStyle"
+        android:layout_width="0dp"
+        android:layout_marginStart="@dimen/margin_small"
+        android:text="@string/header"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_word"
+        tools:text="Translation" />
 </androidx.constraintlayout.widget.ConstraintLayout>

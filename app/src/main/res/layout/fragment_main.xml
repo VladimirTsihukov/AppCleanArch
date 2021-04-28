@@ -4,32 +4,42 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     android:background="@color/primary_holder_color"
+    android:fitsSystemWindows="true"
     tools:context=".view.main.activity.ActivityMain">
 
-    <FrameLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_success"
         android:layout_width="match_parent"
-        android:layout_gravity="center"
         android:layout_height="match_parent">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/tool_bar_fragment_main"
+            style="@style/MyToolbar"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:title="@string/word" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/main_rec_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/view_item_holder" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tool_bar_fragment_main"
+            tools:listitem="@layout/view_item_holder_word" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fub_btn_search"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/margin_xx_medium"
             android:src="@drawable/ic_search"
             app:backgroundTint="@color/colorAccent"
-            android:layout_gravity="bottom|end" />
-    </FrameLayout>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/tool_bar_fragment_main" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <include
         android:id="@+id/layout_error"
