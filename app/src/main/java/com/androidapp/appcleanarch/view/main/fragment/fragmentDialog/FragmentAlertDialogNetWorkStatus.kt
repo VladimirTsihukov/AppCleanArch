@@ -1,4 +1,4 @@
-package com.androidapp.appcleanarch.view.main.fragment
+package com.androidapp.appcleanarch.view.main.fragment.fragmentDialog
 
 import android.app.Dialog
 import android.os.Bundle

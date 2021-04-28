@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:clickable="true"
+    android:focusable="true">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/tool_bar_fragment_detail"
+        style="@style/MyToolbar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="@string/word_description" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/img_word"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="@dimen/margin_small"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_video"
+        app:layout_constraintDimensionRatio="h, 2:1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tool_bar_fragment_detail" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_word"
+        style="@style/HeaderTextStyle"
+        android:layout_marginStart="@dimen/margin_small"
+        android:text="@string/header"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/img_word" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_transcription"
+        style="@style/Transcription"
+        app:layout_constraintStart_toStartOf="@+id/tv_word"
+        app:layout_constraintTop_toBottomOf="@+id/tv_word"
+        tools:text="[header]" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_translation"
+        style="@style/BaseTextStyle"
+        android:layout_width="0dp"
+        android:layout_marginStart="@dimen/margin_small"
+        android:text="@string/header"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_transcription"
+        tools:text="Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.75" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/img_play"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_baseline_play_arrow_48"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/img_word"
+        tools:visibility="visible" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/img_stop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/img_word"
+        app:srcCompat="@drawable/ic_baseline_stop_48" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

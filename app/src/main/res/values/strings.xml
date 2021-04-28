@@ -16,4 +16,8 @@
     </string>
     <string name="dialog_title_sorry">Sorry</string>
     <string name="dialog_button_cancel">Cancel</string>
+    <string name="word_description">Word description</string>
+    <string name="history">History</string>
+    <string name="word">Word</string>
+    <string name="history_word">History word</string>
 </resources>

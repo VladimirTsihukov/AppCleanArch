@@ -1,22 +1,19 @@
 package com.androidapp.appcleanarch.view.main.adapter
 
-import android.media.AudioAttributes
-import android.media.MediaPlayer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.androidapp.appcleanarch.R
-import com.androidapp.appcleanarch.model.data.DataModel
-import com.androidapp.appcleanarch.utils.URL_ADD
-import com.bumptech.glide.Glide
-import kotlinx.android.synthetic.main.view_item_holder.view.*
+import com.androidapp.appcleanarch.model.datasource.room.HistoryDataWord
+import kotlinx.android.synthetic.main.view_item_holder_word.view.*
 
-class AdapterMain(private val onClickItem: OnListenerItemClick) : RecyclerView.Adapter<AdapterMain.HolderMain>() {
+class AdapterMain(private val onClickItemAdapterMain: OnListenerItemClickAdapterMain) :
+    RecyclerView.Adapter<AdapterMain.HolderMain>() {
 
-    private var listData: List<DataModel> = mutableListOf()
+    private var listData: List<HistoryDataWord> = mutableListOf()
 
-    fun setData(data: List<DataModel>) {
+    fun setData(data: List<HistoryDataWord>) {
         listData = data
         notifyDataSetChanged()
     }
@@ -24,7 +21,7 @@ class AdapterMain(private val onClickItem: OnListenerItemClick) : RecyclerView.A
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HolderMain {
         return HolderMain(
             LayoutInflater.from(parent.context).inflate(
-                R.layout.view_item_holder,
+                R.layout.view_item_holder_word,
                 parent,
                 false
             )
@@ -41,55 +38,13 @@ class AdapterMain(private val onClickItem: OnListenerItemClick) : RecyclerView.A
 
         init {
             itemView.setOnClickListener {
-                onClickItem.onItemClick(listData[layoutPosition])
+                onClickItemAdapterMain.onItemClick(listData[layoutPosition])
             }
         }
 
-        fun onBind(data: DataModel) {
-            itemView.img_play.visibility = View.INVISIBLE
-            itemView.img_stop.visibility = View.INVISIBLE
-            with(itemView) {
-                tv_item_header.text = data.textHeader
-                tv_item_transcription.text = itemView.context.getString(R.string.transcription).let {
-                    String.format(it, data.meanings[0].transcription)
-                }
-                tv_item_translation.text = data.meanings[0].translation?.translation
-                data.meanings[0].imageUrl?.let { setImg(it) }
-                data.meanings[0].soundUrl?.let { workSoundUrl(it) }
-            }
-        }
-
-        private fun setImg(imgUrl: String) {
-            Glide.with(itemView.context)
-                .load(URL_ADD + imgUrl)
-                .placeholder(R.drawable.ic_img_loading)
-                .error(R.drawable.ic_img_error)
-                .into(itemView.img_word)
-        }
-
-        private fun workSoundUrl(soundUrl: String) {
-            itemView.img_play.visibility = View.VISIBLE
-            val mediaPlayer = MediaPlayer()
-            val audioUrl = URL_ADD + soundUrl
-            mediaPlayer.setAudioAttributes(AudioAttributes
-                    .Builder()
-                    .setContentType(AudioAttributes.CONTENT_TYPE_MOVIE)
-                    .build()
-            )
-            mediaPlayer.setDataSource(audioUrl)
-            mediaPlayer.prepareAsync()
-
-            itemView.img_play.setOnClickListener {
-                itemView.img_play.visibility = View.INVISIBLE
-                itemView.img_stop.visibility = View.VISIBLE
-                mediaPlayer.start()
-            }
-
-            itemView.img_stop.setOnClickListener {
-                itemView.img_play.visibility = View.VISIBLE
-                itemView.img_stop.visibility = View.INVISIBLE
-                mediaPlayer.pause()
-            }
+        fun onBind(data: HistoryDataWord) {
+            itemView.tv_word.text = data.textHeader
+            itemView.tv_word_translation.text = data.translation
         }
     }
 }
