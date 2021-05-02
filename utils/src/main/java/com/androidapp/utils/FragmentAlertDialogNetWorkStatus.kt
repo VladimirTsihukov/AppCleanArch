@@ -1,9 +1,8 @@
-package com.androidapp.appcleanarch.view.main.fragment.fragmentDialog
+package com.androidapp.utils
 
 import android.app.Dialog
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatDialogFragment
-import com.androidapp.appcleanarch.utils.getAlertDialog
 
 class FragmentAlertDialogNetWorkStatus : AppCompatDialogFragment() {
 

@@ -2,6 +2,7 @@ package com.androidapp.appcleanarch.view.interactor
 
 import com.androidapp.appcleanarch.model.repository.Repository
 import com.androidapp.appcleanarch.model.repository.RepositoryLocal
+import com.androidapp.core.interactor.Interactor
 import com.androidapp.model.data.AppState
 import com.androidapp.model.data.DataModel
 

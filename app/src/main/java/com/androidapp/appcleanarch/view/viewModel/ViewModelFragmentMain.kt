@@ -1,8 +1,8 @@
 package com.androidapp.appcleanarch.view.viewModel
 
 import androidx.lifecycle.LiveData
-import com.androidapp.appcleanarch.view.base.ViewModelBase
 import com.androidapp.appcleanarch.view.interactor.InteractorMain
+import com.androidapp.core.base.ViewModelBase
 import com.androidapp.model.data.AppState
 import kotlinx.coroutines.launch
 

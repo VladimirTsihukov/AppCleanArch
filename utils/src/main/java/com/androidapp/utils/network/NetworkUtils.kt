@@ -1,4 +1,4 @@
-package com.androidapp.appcleanarch.utils.network
+package com.androidapp.utils.network
 
 import android.content.Context
 import android.net.ConnectivityManager

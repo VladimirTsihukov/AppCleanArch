@@ -11,13 +11,13 @@ import com.androidapp.appcleanarch.R
 import com.androidapp.appcleanarch.model.datasource.retrofit.RetrofitImplementation
 import com.androidapp.appcleanarch.model.datasource.room.HistoryDataWord
 import com.androidapp.appcleanarch.utils.convertListDataModelOtEntity
-import com.androidapp.appcleanarch.utils.network.isOnline
-import com.androidapp.appcleanarch.view.base.FragmentBase
 import com.androidapp.appcleanarch.view.main.adapter.AdapterMain
 import com.androidapp.appcleanarch.view.main.adapter.OnListenerItemClickAdapterMain
 import com.androidapp.appcleanarch.view.main.fragment.fragmentDialog.FragmentDialogSearch
 import com.androidapp.appcleanarch.view.viewModel.ViewModelFragmentMain
+import com.androidapp.core.base.FragmentBase
 import com.androidapp.model.data.AppState
+import com.androidapp.utils.network.isOnline
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_main.*
 import kotlinx.android.synthetic.main.view_error.*
