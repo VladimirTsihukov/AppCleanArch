@@ -9,10 +9,6 @@ android {
     compileSdkVersion Config.compile_sdk
     buildToolsVersion Config.build_tools_version
 
-    buildFeatures {
-        viewBinding true
-    }
-
     defaultConfig {
         applicationId Config.application_id
         minSdkVersion Config.min_sdk
@@ -45,8 +41,6 @@ dependencies {
     implementation project(Modules.utils)
     implementation project(Modules.core)
     implementation project(Modules.repository)
-
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
     implementation Kotlin.core
 
@@ -86,4 +80,10 @@ dependencies {
     implementation Room.runtime
     kapt Room.compiler
     implementation Room.room_ktx
+
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+}
+
+repositories {
+    mavenCentral()
 }
