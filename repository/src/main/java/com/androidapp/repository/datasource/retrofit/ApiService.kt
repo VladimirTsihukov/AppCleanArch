@@ -1,4 +1,4 @@
-package com.androidapp.appcleanarch.model.datasource.retrofit
+package com.androidapp.repository.datasource.retrofit
 
 import com.androidapp.model.data.DataModel
 import retrofit2.http.GET

@@ -1,4 +1,4 @@
-package com.androidapp.appcleanarch.model.datasource.room
+package com.androidapp.repository.datasource.room
 
 import androidx.room.*
 

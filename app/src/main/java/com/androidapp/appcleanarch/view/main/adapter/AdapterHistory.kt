@@ -5,7 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.androidapp.appcleanarch.R
-import com.androidapp.appcleanarch.model.datasource.room.HistoryDataWord
+import com.androidapp.repository.datasource.room.HistoryDataWord
 import kotlinx.android.synthetic.main.view_item_holder_history_word.view.*
 
 class AdapterHistory(private val onListenerItemClick: OnListenerItemClickAdapterHistory) :

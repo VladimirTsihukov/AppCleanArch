@@ -11,17 +11,11 @@
         android:id="@+id/tv_word"
         style="@style/HeaderTextStyle"
         android:layout_marginStart="@dimen/margin_small"
+        android:layout_width="0dp"
         android:text="@string/header"
         android:paddingTop="@dimen/margin_xx_small"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_baseline_arrow_forward_24"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_word_translation"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/ic_baseline"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -31,6 +25,18 @@
         android:layout_marginStart="@dimen/margin_small"
         android:text="@string/header"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/ic_baseline"
         app:layout_constraintTop_toBottomOf="@id/tv_word"
         tools:text="Translation" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ic_baseline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_baseline_arrow_forward_24"
+        android:padding="@dimen/margin_xx_small"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_word_translation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

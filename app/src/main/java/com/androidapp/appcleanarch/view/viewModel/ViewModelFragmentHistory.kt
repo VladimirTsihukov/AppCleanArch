@@ -2,8 +2,8 @@ package com.androidapp.appcleanarch.view.viewModel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.androidapp.appcleanarch.model.datasource.room.HistoryDao
-import com.androidapp.appcleanarch.model.datasource.room.HistoryDataWord
+import com.androidapp.repository.datasource.room.HistoryDao
+import com.androidapp.repository.datasource.room.HistoryDataWord
 import kotlinx.coroutines.*
 
 class ViewModelFragmentHistory(private val historyDao: HistoryDao) : ViewModel() {

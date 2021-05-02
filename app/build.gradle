@@ -44,6 +44,7 @@ dependencies {
     implementation project(Modules.model)
     implementation project(Modules.utils)
     implementation project(Modules.core)
+    implementation project(Modules.repository)
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
@@ -61,13 +62,6 @@ dependencies {
     // Rx-Java
     implementation Rxjava.rx_android
     implementation Rxjava.rx_java
-
-    // Retrofit 2
-    implementation Retrofit.retrofit
-    implementation Retrofit.converter_gson
-    implementation Retrofit.logging_interceptor
-    implementation Retrofit.retrofit2_rxjava2_adapter
-    implementation Retrofit.retrofit2_kotlin_coroutines_adapter
 
     //Glide
     implementation Glide.glide
@@ -92,5 +86,4 @@ dependencies {
     implementation Room.runtime
     kapt Room.compiler
     implementation Room.room_ktx
-
 }

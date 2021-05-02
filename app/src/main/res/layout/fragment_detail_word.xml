@@ -31,12 +31,16 @@
         style="@style/HeaderTextStyle"
         android:layout_marginStart="@dimen/margin_small"
         android:text="@string/header"
+        android:layout_width="0dp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/img_word" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_transcription"
         style="@style/Transcription"
+        android:layout_width="0dp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintStart_toStartOf="@+id/tv_word"
         app:layout_constraintTop_toBottomOf="@+id/tv_word"
         tools:text="[header]" />

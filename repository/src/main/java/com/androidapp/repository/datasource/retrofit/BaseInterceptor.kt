@@ -1,4 +1,4 @@
-package com.androidapp.appcleanarch.model.datasource.retrofit
+package com.androidapp.repository.datasource.retrofit
 
 import okhttp3.Interceptor
 import okhttp3.Response

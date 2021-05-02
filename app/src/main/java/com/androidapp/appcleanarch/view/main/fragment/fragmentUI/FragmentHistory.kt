@@ -7,10 +7,10 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.androidapp.appcleanarch.R
-import com.androidapp.appcleanarch.model.datasource.room.HistoryDataWord
 import com.androidapp.appcleanarch.view.main.adapter.AdapterHistory
 import com.androidapp.appcleanarch.view.main.adapter.OnListenerItemClickAdapterHistory
 import com.androidapp.appcleanarch.view.viewModel.ViewModelFragmentHistory
+import com.androidapp.repository.datasource.room.HistoryDataWord
 import kotlinx.android.synthetic.main.fragment_history.*
 import org.koin.android.viewmodel.ext.android.viewModel
 

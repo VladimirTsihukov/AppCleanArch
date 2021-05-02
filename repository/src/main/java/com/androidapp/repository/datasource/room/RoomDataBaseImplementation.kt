@@ -1,9 +1,9 @@
-package com.androidapp.appcleanarch.model.datasource.room
+package com.androidapp.repository.datasource.room
 
-import com.androidapp.appcleanarch.model.datasource.DataSourceLocal
-import com.androidapp.appcleanarch.utils.convertFindWordToEntity
-import com.androidapp.appcleanarch.utils.convertListEntityToDataModel
 import com.androidapp.model.data.DataModel
+import com.androidapp.repository.convertFindWordToEntity
+import com.androidapp.repository.convertListEntityToDataModel
+import com.androidapp.repository.datasource.DataSourceLocal
 
 class RoomDataBaseImplementation(private val historyDao: HistoryDao) :
     DataSourceLocal<List<DataModel>> {

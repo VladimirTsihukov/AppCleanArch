@@ -1,4 +1,4 @@
-package com.androidapp.appcleanarch.model.datasource.room
+package com.androidapp.repository.datasource.room
 
 import android.os.Parcelable
 import androidx.room.ColumnInfo

@@ -1,7 +1,7 @@
-package com.androidapp.appcleanarch.model.repository
+package com.androidapp.repository.repository
 
-import com.androidapp.appcleanarch.model.datasource.DataSourceLocal
 import com.androidapp.model.data.DataModel
+import com.androidapp.repository.datasource.DataSourceLocal
 
 class RepositoryImplementationLocal(private val dataSource: DataSourceLocal<List<DataModel>>)
     : RepositoryLocal<List<DataModel>> {

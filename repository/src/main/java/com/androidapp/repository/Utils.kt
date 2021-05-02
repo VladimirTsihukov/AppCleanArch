@@ -1,9 +1,9 @@
-package com.androidapp.appcleanarch.utils
+package com.androidapp.repository
 
-import com.androidapp.appcleanarch.model.datasource.room.HistoryDataWord
 import com.androidapp.model.data.DataModel
 import com.androidapp.model.data.Meanings
 import com.androidapp.model.data.Translation
+import com.androidapp.repository.datasource.room.HistoryDataWord
 
 fun convertFindWordToEntity(word: String, dataModel: List<DataModel>): HistoryDataWord? {
     val result = dataModel.find { word == it.textHeader }
@@ -17,18 +17,6 @@ fun convertFindWordToEntity(word: String, dataModel: List<DataModel>): HistoryDa
         )
     }
     return null
-}
-
-fun convertListDataModelOtEntity(dataModel: List<DataModel>): List<HistoryDataWord> {
-    return dataModel.map {
-        HistoryDataWord(
-            textHeader = it.textHeader,
-            translation = it.meanings[0].translation?.translation,
-            transcription = it.meanings[0].transcription,
-            imageUrl = it.meanings[0].imageUrl,
-            soundUrl = it.meanings[0].soundUrl,
-        )
-    }
 }
 
 fun convertListEntityToDataModel(dataModel: List<HistoryDataWord>): List<DataModel> {
@@ -45,6 +33,18 @@ fun convertListEntityToDataModel(dataModel: List<HistoryDataWord>): List<DataMod
                     )
                 )
             )
+        )
+    }
+}
+
+fun convertListDataModelOtEntity(dataModel: List<DataModel>): List<HistoryDataWord> {
+    return dataModel.map {
+        HistoryDataWord(
+            textHeader = it.textHeader,
+            translation = it.meanings[0].translation?.translation,
+            transcription = it.meanings[0].transcription,
+            imageUrl = it.meanings[0].imageUrl,
+            soundUrl = it.meanings[0].soundUrl,
         )
     }
 }

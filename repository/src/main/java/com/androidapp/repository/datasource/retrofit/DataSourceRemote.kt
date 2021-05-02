@@ -1,7 +1,7 @@
-package com.androidapp.appcleanarch.model.datasource.retrofit
+package com.androidapp.repository.datasource.retrofit
 
-import com.androidapp.appcleanarch.model.datasource.DataSource
 import com.androidapp.model.data.DataModel
+import com.androidapp.repository.datasource.DataSource
 
 class DataSourceRemote (
     private val remoteProvider : RetrofitImplementation = RetrofitImplementation()

@@ -1,4 +1,4 @@
-package com.androidapp.appcleanarch.model.datasource
+package com.androidapp.repository.datasource
 
 import com.androidapp.model.data.DataModel
 

@@ -10,15 +10,18 @@
         android:id="@+id/tv_history_word"
         style="@style/HeaderTextStyle"
         android:layout_marginStart="@dimen/margin_small"
+        android:layout_width="0dp"
         android:text="@string/header"
         android:padding="@dimen/margin_xx_small"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/image_delete_word"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/image_delete_word"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:padding="@dimen/margin_xx_small"
         android:src="@drawable/ic_baseline_delete_outline_24"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="@id/tv_history_word"

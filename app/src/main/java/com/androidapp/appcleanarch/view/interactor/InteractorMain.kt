@@ -1,10 +1,10 @@
 package com.androidapp.appcleanarch.view.interactor
 
-import com.androidapp.appcleanarch.model.repository.Repository
-import com.androidapp.appcleanarch.model.repository.RepositoryLocal
 import com.androidapp.core.interactor.Interactor
 import com.androidapp.model.data.AppState
 import com.androidapp.model.data.DataModel
+import com.androidapp.repository.repository.Repository
+import com.androidapp.repository.repository.RepositoryLocal
 
 class InteractorMain(
     private val remoteRepository: Repository<List<DataModel>>,

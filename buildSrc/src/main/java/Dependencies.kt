@@ -14,6 +14,7 @@ object Modules {
     const val model = ":model"
     const val utils = ":utils"
     const val core = ":core"
+    const val repository = ":repository"
 }
 
 object Releases {
