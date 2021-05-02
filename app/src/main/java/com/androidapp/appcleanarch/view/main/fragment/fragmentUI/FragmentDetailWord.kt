@@ -6,8 +6,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import com.androidapp.appcleanarch.R
-import com.androidapp.appcleanarch.model.datasource.room.HistoryDataWord
-import com.androidapp.appcleanarch.utils.URL_ADD
+import com.androidapp.repository.datasource.room.HistoryDataWord
+import com.androidapp.utils.URL_ADD
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.fragment_detail_word.*
 
