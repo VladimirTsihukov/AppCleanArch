@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.androidapp.appcleanarch.App
 import com.androidapp.appcleanarch.R
-import com.androidapp.appcleanarch.model.data.AppState
 import com.androidapp.appcleanarch.model.datasource.retrofit.RetrofitImplementation
 import com.androidapp.appcleanarch.model.datasource.room.HistoryDataWord
 import com.androidapp.appcleanarch.utils.convertListDataModelOtEntity
@@ -18,6 +17,7 @@ import com.androidapp.appcleanarch.view.main.adapter.AdapterMain
 import com.androidapp.appcleanarch.view.main.adapter.OnListenerItemClickAdapterMain
 import com.androidapp.appcleanarch.view.main.fragment.fragmentDialog.FragmentDialogSearch
 import com.androidapp.appcleanarch.view.viewModel.ViewModelFragmentMain
+import com.androidapp.model.data.AppState
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_main.*
 import kotlinx.android.synthetic.main.view_error.*
@@ -94,7 +94,9 @@ class FragmentMain : FragmentBase<AppState>(R.layout.fragment_main) {
                 if (appState.progress != null) {
                     progress_bar_horizontal.visibility = View.VISIBLE
                     progress_bar_round.visibility = View.GONE
-                    progress_bar_horizontal.progress = appState.progress
+                    appState.progress?.let {
+                        progress_bar_horizontal.progress
+                    }
                 } else {
                     progress_bar_horizontal.visibility = View.GONE
                     progress_bar_round.visibility = View.VISIBLE

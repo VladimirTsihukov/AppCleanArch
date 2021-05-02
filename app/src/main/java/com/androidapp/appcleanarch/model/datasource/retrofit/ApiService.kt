@@ -1,6 +1,6 @@
 package com.androidapp.appcleanarch.model.datasource.retrofit
 
-import com.androidapp.appcleanarch.model.data.DataModel
+import com.androidapp.model.data.DataModel
 import retrofit2.http.GET
 import retrofit2.http.Query
 

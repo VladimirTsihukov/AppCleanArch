@@ -1,7 +1,7 @@
 package com.androidapp.appcleanarch.model.repository
 
-import com.androidapp.appcleanarch.model.data.DataModel
 import com.androidapp.appcleanarch.model.datasource.DataSource
+import com.androidapp.model.data.DataModel
 
 class RepositoryImplementation (
     private val dataSource: DataSource<List<DataModel>>

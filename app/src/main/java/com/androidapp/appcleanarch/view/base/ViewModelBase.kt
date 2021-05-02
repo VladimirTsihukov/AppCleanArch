@@ -2,7 +2,7 @@ package com.androidapp.appcleanarch.view.base
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.androidapp.appcleanarch.model.data.AppState
+import com.androidapp.model.data.AppState
 import kotlinx.coroutines.*
 
 abstract class ViewModelBase<T : AppState>(

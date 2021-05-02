@@ -1,7 +1,7 @@
 package com.androidapp.appcleanarch.model.datasource.retrofit
 
-import com.androidapp.appcleanarch.model.data.DataModel
 import com.androidapp.appcleanarch.model.datasource.DataSource
+import com.androidapp.model.data.DataModel
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient

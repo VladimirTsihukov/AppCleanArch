@@ -9,6 +9,11 @@ object Config {
     const val build_tools_version = "30.0.3"
 }
 
+object Modules {
+    const val app = ":app"
+    const val model = ":model"
+}
+
 object Releases {
     const val version_code = 1
     const val version_name = "1.0"

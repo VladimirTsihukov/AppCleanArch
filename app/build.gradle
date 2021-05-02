@@ -40,6 +40,9 @@ android {
 
 dependencies {
 
+    //Modules
+    implementation project(Modules.model)
+
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
     implementation Kotlin.core

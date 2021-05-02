@@ -1,4 +1,4 @@
-package com.androidapp.appcleanarch.model.data
+package com.androidapp.model.data
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize

@@ -1,9 +1,9 @@
 package com.androidapp.appcleanarch.view.base
 
 import androidx.fragment.app.Fragment
-import com.androidapp.appcleanarch.model.data.AppState
 import com.androidapp.appcleanarch.utils.network.isOnline
 import com.androidapp.appcleanarch.view.main.fragment.fragmentDialog.FragmentAlertDialogNetWorkStatus
+import com.androidapp.model.data.AppState
 
 abstract class FragmentBase<T: AppState>(contentLayoutId: Int) : Fragment(contentLayoutId) {
 

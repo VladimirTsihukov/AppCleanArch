@@ -3,10 +3,10 @@ package com.androidapp.appcleanarch.utils
 import android.app.AlertDialog
 import android.content.Context
 import com.androidapp.appcleanarch.R
-import com.androidapp.appcleanarch.model.data.DataModel
-import com.androidapp.appcleanarch.model.data.Meanings
-import com.androidapp.appcleanarch.model.data.Translation
 import com.androidapp.appcleanarch.model.datasource.room.HistoryDataWord
+import com.androidapp.model.data.DataModel
+import com.androidapp.model.data.Meanings
+import com.androidapp.model.data.Translation
 
 fun getAlertDialog(context: Context): AlertDialog {
     return AlertDialog.Builder(context)
