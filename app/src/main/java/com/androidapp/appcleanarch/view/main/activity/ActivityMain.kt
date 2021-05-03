@@ -1,12 +1,41 @@
 package com.androidapp.appcleanarch.view.main.activity
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.androidapp.appcleanarch.R
 import com.androidapp.appcleanarch.view.main.fragment.OnSearchClickListener
 import com.androidapp.appcleanarch.view.main.fragment.fragmentUI.FragmentMain
+import com.google.android.material.snackbar.Snackbar
+import com.google.android.play.core.appupdate.AppUpdateManager
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.android.play.core.install.InstallStateUpdatedListener
+import com.google.android.play.core.install.model.AppUpdateType
+import com.google.android.play.core.install.model.InstallStatus
+import com.google.android.play.core.install.model.UpdateAvailability
+
+private const val REQUEST_CODE = 42
 
 class ActivityMain : AppCompatActivity() {
+
+    private lateinit var appUpdateManager: AppUpdateManager
+
+    //метод нужен в основном для обработки ошибок обновления
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                //если все впорядке снимаем слушателя прогресса обновления
+                appUpdateManager.unregisterListener(stateUpdateListener)
+            } else {
+                //если обновление прервано или еще какие либо ошибки, показываем уведомление
+                Toast.makeText(this,
+                    "Update flow failed, Result code $resultCode",
+                    Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -15,6 +44,75 @@ class ActivityMain : AppCompatActivity() {
             supportFragmentManager.beginTransaction()
                 .add(R.id.container, FragmentMain.newInstance(), FragmentMain.TAG)
                 .commit()
+        }
+
+        checkForUpdate()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        appUpdateManager.appUpdateInfo.addOnSuccessListener { appUpdateInfo ->
+            //обновление скачано но не установлено
+            if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
+                popupSnackbarForCompleteUpdate()
+            }
+            //обновление не скачалось - можно возобновить устновку
+            if (appUpdateInfo.updateAvailability() == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS) {
+                appUpdateManager.startUpdateFlowForResult(
+                    appUpdateInfo,
+                    AppUpdateType.IMMEDIATE,
+                    this,
+                    REQUEST_CODE
+                )
+            }
+        }
+    }
+
+    private fun checkForUpdate() {
+        appUpdateManager = AppUpdateManagerFactory.create(application)
+
+        //возвращаем intent для информации об обновлении
+        val appUpdateInfo = appUpdateManager.appUpdateInfo
+
+        //Проверям наличи обновления
+        appUpdateInfo.addOnSuccessListener {
+            //проверка на немедленное тип обновлениея(IMMEDIATE)
+            if (it.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+                && it.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
+            ) {
+                //передаем слушателя прогресса (для гибкого типа обновления)
+                appUpdateManager.registerListener(stateUpdateListener)
+                //выполняем запрос
+                appUpdateManager.startUpdateFlowForResult(
+                    it,
+                    AppUpdateType.IMMEDIATE,
+                    this,
+                    //код для обработки запросса в onActivityResult
+                    REQUEST_CODE
+                )
+            }
+        }
+    }
+
+    private val stateUpdateListener: InstallStateUpdatedListener =
+        InstallStateUpdatedListener { state ->
+            //переменная state отдает прогресс установки
+            state?.let {
+                if (it.installStatus() == InstallStatus.DOWNLOADED) {
+                    //когда обновление скачалось обображаем SnackBar
+                    popupSnackbarForCompleteUpdate()
+                }
+            }
+        }
+
+    private fun popupSnackbarForCompleteUpdate() {
+        Snackbar.make(
+            findViewById(R.id.activity_main_layout),
+            "An update has just been downloaded.",
+            Snackbar.LENGTH_INDEFINITE
+        ).apply {
+            setAction("Restart") { appUpdateManager.completeUpdate() }
+            show()
         }
     }
 

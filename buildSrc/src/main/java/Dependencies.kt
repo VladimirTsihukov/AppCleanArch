@@ -70,6 +70,9 @@ object Version {
 
     //Kotlin
     const val core = "1.3.2"
+
+    //Google Play
+    const val googlePlayCore = "1.6.3"
 }
 
 object Room {
@@ -129,4 +132,8 @@ object Design {
 
 object Kotlin {
     const val core = "androidx.core:core-ktx:${Version.core}"
+}
+
+object GooglePlay {
+    const val googlePlayCore = "com.google.android.play:core:${Version.googlePlayCore}"
 }
