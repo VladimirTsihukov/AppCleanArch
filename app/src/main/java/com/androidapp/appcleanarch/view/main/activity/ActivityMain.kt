@@ -2,6 +2,7 @@ package com.androidapp.appcleanarch.view.main.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.androidapp.appcleanarch.R
@@ -123,4 +124,6 @@ class ActivityMain : AppCompatActivity() {
             }
         }
     }
+
+    fun getIdContainer() : Int = findViewById<FrameLayout>(R.id.container).id
 }

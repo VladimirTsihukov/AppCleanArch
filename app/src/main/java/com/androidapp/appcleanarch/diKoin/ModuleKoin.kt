@@ -2,7 +2,6 @@ package com.androidapp.appcleanarch.diKoin
 
 import androidx.room.Room
 import com.androidapp.appcleanarch.view.interactor.InteractorMain
-import com.androidapp.appcleanarch.view.viewModel.ViewModelFragmentHistory
 import com.androidapp.appcleanarch.view.viewModel.ViewModelFragmentMain
 import com.androidapp.model.data.DataModel
 import com.androidapp.repository.datasource.retrofit.RetrofitImplementation
@@ -14,7 +13,15 @@ import com.androidapp.repository.repository.RepositoryImplementation
 import com.androidapp.repository.repository.RepositoryImplementationLocal
 import com.androidapp.repository.repository.RepositoryLocal
 import org.koin.android.viewmodel.dsl.viewModel
+import org.koin.core.context.loadKoinModules
 import org.koin.dsl.module
+
+//создает зависимость
+fun injectDependencies() = loadModules
+
+private val loadModules by lazy {
+    loadKoinModules(listOf(application, mainScreen))
+}
 
 val application = module {
 
@@ -38,10 +45,6 @@ val mainScreen = module {
 
     viewModel {
         ViewModelFragmentMain(get())
-    }
-
-    viewModel {
-        ViewModelFragmentHistory(get())
     }
 }
 

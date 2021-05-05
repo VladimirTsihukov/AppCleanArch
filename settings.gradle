@@ -1,3 +1,4 @@
+include ':historyscreen'
 include ':app'
 include ':repository'
 include ':core'

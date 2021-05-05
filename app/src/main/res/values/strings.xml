@@ -15,4 +15,5 @@
     <string name="history">History</string>
     <string name="word">Word</string>
     <string name="history_word">History word</string>
+    <string name="title_historyscreen">History Screen Feature</string>
 </resources>

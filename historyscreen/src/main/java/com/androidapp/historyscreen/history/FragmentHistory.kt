@@ -1,4 +1,4 @@
-package com.androidapp.appcleanarch.view.main.fragment.fragmentUI
+package com.androidapp.historyscreen.history
 
 import android.os.Bundle
 import android.view.View
@@ -6,10 +6,10 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.androidapp.appcleanarch.R
-import com.androidapp.appcleanarch.view.main.adapter.AdapterHistory
-import com.androidapp.appcleanarch.view.main.adapter.OnListenerItemClickAdapterHistory
-import com.androidapp.appcleanarch.view.viewModel.ViewModelFragmentHistory
+import com.androidapp.appcleanarch.view.main.activity.ActivityMain
+import com.androidapp.appcleanarch.view.main.fragment.fragmentUI.FragmentDetailWord
+import com.androidapp.historyscreen.R
+import com.androidapp.historyscreen.injectDependenciesHistory
 import com.androidapp.repository.datasource.room.HistoryDataWord
 import kotlinx.android.synthetic.main.fragment_history.*
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -18,10 +18,12 @@ class FragmentHistory : Fragment(R.layout.fragment_history) {
 
     private lateinit var recyclerView: RecyclerView
     private val adapterWord by lazy { AdapterHistory(clickListener) }
-    private val viewModel by viewModel<ViewModelFragmentHistory>()
+    private lateinit var viewModel: ViewModelFragmentHistory
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        initViewModel()
 
         initToolbar()
 
@@ -31,6 +33,13 @@ class FragmentHistory : Fragment(R.layout.fragment_history) {
         recyclerView.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
         recyclerView.adapter = adapterWord
 
+    }
+
+    private fun initViewModel() {
+        injectDependenciesHistory()
+
+        val model: ViewModelFragmentHistory by viewModel()
+        viewModel = model
         viewModel.liveDataHistory.observe(viewLifecycleOwner, { liveData ->
             liveData?.let {
                 adapterWord.setData(it)
@@ -47,11 +56,13 @@ class FragmentHistory : Fragment(R.layout.fragment_history) {
 
     private val clickListener = object : OnListenerItemClickAdapterHistory {
         override fun onItemClick(dataModel: HistoryDataWord) {
-            activity?.let {
+            val containerActivity = activity as? ActivityMain
+            containerActivity?.let {
+                val container = it.getIdContainer()
                 it.supportFragmentManager.beginTransaction()
                     .addToBackStack(null)
                     .add(
-                        R.id.container,
+                        container,
                         FragmentDetailWord.newInstance(dataModel),
                         FragmentDetailWord.TAG
                     )

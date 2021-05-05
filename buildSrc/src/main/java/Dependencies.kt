@@ -2,7 +2,7 @@ import org.gradle.api.JavaVersion
 
 object Config {
     const val compile_sdk = 30
-    const val min_sdk = 23
+    const val min_sdk = 26
     const val target_sdk = 30
     const val application_id = "com.androidapp.appcleanarch"
     val java_version = JavaVersion.VERSION_1_8
@@ -15,6 +15,8 @@ object Modules {
     const val utils = ":utils"
     const val core = ":core"
     const val repository = ":repository"
+    //Features
+    const val historyScreen = ":historyscreen"
 }
 
 object Releases {

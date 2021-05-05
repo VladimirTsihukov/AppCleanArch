@@ -1,13 +1,17 @@
 package com.androidapp.appcleanarch.view.main.fragment.fragmentUI
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.androidapp.appcleanarch.App
 import com.androidapp.appcleanarch.R
+import com.androidapp.appcleanarch.diKoin.injectDependencies
 import com.androidapp.appcleanarch.view.main.adapter.AdapterMain
 import com.androidapp.appcleanarch.view.main.adapter.OnListenerItemClickAdapterMain
 import com.androidapp.appcleanarch.view.main.fragment.fragmentDialog.FragmentDialogSearch
@@ -18,14 +22,24 @@ import com.androidapp.repository.convertListDataModelOtEntity
 import com.androidapp.repository.datasource.retrofit.RetrofitImplementation
 import com.androidapp.repository.datasource.room.HistoryDataWord
 import com.androidapp.utils.network.isOnline
+import com.google.android.play.core.splitinstall.SplitInstallManager
+import com.google.android.play.core.splitinstall.SplitInstallManagerFactory
+import com.google.android.play.core.splitinstall.SplitInstallRequest
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_main.*
 import kotlinx.android.synthetic.main.view_error.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
+private const val HISTORY_FEATURE_NAME = "historyscreen"
+private const val HISTORY_PACKAGE_NAME = "com.androidapp.historyscreen.history.FragmentHistory"
+private const val TAG_FRAGMENT_HISTORY = "FragmentHistory"
+
 class FragmentMain : FragmentBase<AppState>(R.layout.fragment_main) {
 
-    override val viewModel by viewModel<ViewModelFragmentMain>()
+    //отвечает за установку dynamic feature
+    private lateinit var splitInstallManager: SplitInstallManager
+
+    override lateinit var viewModel: ViewModelFragmentMain
 
     private var activityMain: FragmentActivity? = null
 
@@ -34,9 +48,10 @@ class FragmentMain : FragmentBase<AppState>(R.layout.fragment_main) {
     private val compositeDisposable = CompositeDisposable()
     private val iterator = RetrofitImplementation()
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        initViewModel()
         initToolBar()
 
         recyclerView = view.findViewById(R.id.main_rec_view)
@@ -55,22 +70,52 @@ class FragmentMain : FragmentBase<AppState>(R.layout.fragment_main) {
         })
     }
 
+    private fun initViewModel() {
+        injectDependencies()
+        val model: ViewModelFragmentMain by viewModel()
+        viewModel = model
+    }
+
     private fun initToolBar() {
         tool_bar_fragment_main.inflateMenu(R.menu.menu_fragment_main)
         tool_bar_fragment_main.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.menu_fragment_main_history -> {
-                    activityMain?.let {
-                        it.supportFragmentManager.beginTransaction()
-                            .addToBackStack(null)
-                            .add(R.id.container, FragmentHistory.newInstance(), FragmentHistory.TAG)
-                            .commit()
-                    }
+                    splitManager()
                     return@setOnMenuItemClickListener true
                 }
                 else -> true
             }
         }
+    }
+
+    private fun splitManager() {
+        splitInstallManager = SplitInstallManagerFactory.create(App.instance)
+        val request = SplitInstallRequest
+            .newBuilder()
+            .addModule(HISTORY_FEATURE_NAME)
+            .build()
+
+        //начинаем скачивать обновление
+        splitInstallManager
+            .startInstall(request)
+            .addOnSuccessListener {
+                activityMain?.let {
+                    val fragment =
+                        Class.forName(HISTORY_PACKAGE_NAME).newInstance() as Fragment
+                    it.supportFragmentManager.beginTransaction()
+                        .addToBackStack(null)
+                        .add(R.id.container, fragment, TAG_FRAGMENT_HISTORY)
+                        .commit()
+                }
+            }
+            .addOnFailureListener {
+                Log.i("TAG", "Couldn't download feature: " + it.message)
+                Toast.makeText(activityMain,
+                    "Couldn't download feature: " + it.message,
+                    Toast.LENGTH_SHORT)
+                    .show()
+            }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
