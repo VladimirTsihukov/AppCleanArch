@@ -1,4 +1,4 @@
-package com.androidapp.appcleanarch.view.viewModel
+package com.androidapp.historyscreen.history
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

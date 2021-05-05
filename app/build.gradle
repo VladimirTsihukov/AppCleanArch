@@ -32,6 +32,7 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    dynamicFeatures = [Modules.historyScreen]
 }
 
 dependencies {
@@ -76,11 +77,13 @@ dependencies {
     implementation Koin.koin_android
     implementation Koin.koin_android_viewmodel
 
+    //Google Play
+    implementation GooglePlay.googlePlayCore
+
     //Room
     implementation Room.runtime
     kapt Room.compiler
     implementation Room.room_ktx
-
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 }
 

@@ -6,10 +6,11 @@ plugins {
 
 
 dependencies {
-    implementation Design.appcompat
-
-    //Kotlin
     implementation Kotlin.core
+
+    implementation Design.appcompat
+    implementation Design.material
+    implementation Design.constraintLayout
 
     //Test
     testImplementation TestImpl.junit

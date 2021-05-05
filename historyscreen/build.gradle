@@ -1,0 +1,58 @@
+plugins {
+    id 'com.android.dynamic-feature'
+    id 'kotlin-android-extensions'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+}
+android {
+    compileSdkVersion Config.compile_sdk
+    buildToolsVersion Config.build_tools_version
+
+    defaultConfig {
+        applicationId "com.androidapp.historyscreen"
+        minSdkVersion Config.min_sdk
+        targetSdkVersion Config.target_sdk
+        versionCode Releases.version_code
+        versionName Releases.version_name
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+
+    implementation project(Modules.app)
+    implementation project(Modules.model)
+    implementation project(Modules.repository)
+    implementation project(Modules.core)
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+
+    implementation Kotlin.core
+
+    implementation Design.appcompat
+    implementation Design.material
+    implementation Design.constraintLayout
+
+    //Koin
+    implementation Koin.koin_android
+    implementation Koin.koin_android_viewmodel
+
+    //Coroutine
+    implementation Coroutine.coroutines_core
+    implementation Coroutine.coroutines_android
+
+    //Test
+    testImplementation TestImpl.junit
+    androidTestImplementation TestImpl.runner
+    androidTestImplementation TestImpl.espresso
+
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+}
