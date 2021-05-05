@@ -1,6 +1,7 @@
 package com.androidapp.appcleanarch.diKoin
 
 import androidx.room.Room
+import com.androidapp.appcleanarch.Router
 import com.androidapp.appcleanarch.view.interactor.InteractorMain
 import com.androidapp.appcleanarch.view.viewModel.ViewModelFragmentMain
 import com.androidapp.model.data.DataModel
@@ -35,6 +36,8 @@ val application = module {
     single<RepositoryLocal<List<DataModel>>> {
         RepositoryImplementationLocal(RoomDataBaseImplementation(get()))
     }
+
+    single<Router> { Router() }
 }
 
 val mainScreen = module {

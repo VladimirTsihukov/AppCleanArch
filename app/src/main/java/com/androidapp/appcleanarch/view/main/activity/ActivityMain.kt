@@ -6,6 +6,8 @@ import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.androidapp.appcleanarch.R
+import com.androidapp.appcleanarch.Router
+import com.androidapp.appcleanarch.diKoin.injectDependencies
 import com.androidapp.appcleanarch.view.main.fragment.OnSearchClickListener
 import com.androidapp.appcleanarch.view.main.fragment.fragmentUI.FragmentMain
 import com.google.android.material.snackbar.Snackbar
@@ -15,10 +17,13 @@ import com.google.android.play.core.install.InstallStateUpdatedListener
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
+import org.koin.android.ext.android.getKoin
 
 private const val REQUEST_CODE = 42
 
 class ActivityMain : AppCompatActivity() {
+
+    private val router: Router by getKoin().inject()
 
     private lateinit var appUpdateManager: AppUpdateManager
 
@@ -41,6 +46,9 @@ class ActivityMain : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        initKoin()
+
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
                 .add(R.id.container, FragmentMain.newInstance(), FragmentMain.TAG)
@@ -48,6 +56,11 @@ class ActivityMain : AppCompatActivity() {
         }
 
         checkForUpdate()
+    }
+
+    private fun initKoin() {
+        injectDependencies()
+        router.activity = this
     }
 
     override fun onResume() {
@@ -125,5 +138,10 @@ class ActivityMain : AppCompatActivity() {
         }
     }
 
-    fun getIdContainer() : Int = findViewById<FrameLayout>(R.id.container).id
+    fun getIdContainer(): Int = findViewById<FrameLayout>(R.id.container).id
+
+    override fun onDestroy() {
+        router.activity = null
+        super.onDestroy()
+    }
 }

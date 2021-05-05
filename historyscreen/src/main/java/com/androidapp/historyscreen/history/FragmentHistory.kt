@@ -6,15 +6,18 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.androidapp.appcleanarch.view.main.activity.ActivityMain
+import com.androidapp.appcleanarch.Router
 import com.androidapp.appcleanarch.view.main.fragment.fragmentUI.FragmentDetailWord
 import com.androidapp.historyscreen.R
 import com.androidapp.historyscreen.injectDependenciesHistory
 import com.androidapp.repository.datasource.room.HistoryDataWord
 import kotlinx.android.synthetic.main.fragment_history.*
+import org.koin.android.ext.android.getKoin
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class FragmentHistory : Fragment(R.layout.fragment_history) {
+
+    private val router: Router by getKoin().inject()
 
     private lateinit var recyclerView: RecyclerView
     private val adapterWord by lazy { AdapterHistory(clickListener) }
@@ -56,18 +59,8 @@ class FragmentHistory : Fragment(R.layout.fragment_history) {
 
     private val clickListener = object : OnListenerItemClickAdapterHistory {
         override fun onItemClick(dataModel: HistoryDataWord) {
-            val containerActivity = activity as? ActivityMain
-            containerActivity?.let {
-                val container = it.getIdContainer()
-                it.supportFragmentManager.beginTransaction()
-                    .addToBackStack(null)
-                    .add(
-                        container,
-                        FragmentDetailWord.newInstance(dataModel),
-                        FragmentDetailWord.TAG
-                    )
-                    .commit()
-            }
+            router.addFragmentToABackStack(FragmentDetailWord.newInstance(dataModel),
+                FragmentDetailWord.TAG)
         }
 
         override fun deleteWord(word: String) {

@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.androidapp.appcleanarch.App
 import com.androidapp.appcleanarch.R
-import com.androidapp.appcleanarch.diKoin.injectDependencies
+import com.androidapp.appcleanarch.Router
 import com.androidapp.appcleanarch.view.main.adapter.AdapterMain
 import com.androidapp.appcleanarch.view.main.adapter.OnListenerItemClickAdapterMain
 import com.androidapp.appcleanarch.view.main.fragment.fragmentDialog.FragmentDialogSearch
@@ -28,6 +28,7 @@ import com.google.android.play.core.splitinstall.SplitInstallRequest
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_main.*
 import kotlinx.android.synthetic.main.view_error.*
+import org.koin.android.ext.android.getKoin
 import org.koin.android.viewmodel.ext.android.viewModel
 
 private const val HISTORY_FEATURE_NAME = "historyscreen"
@@ -47,6 +48,7 @@ class FragmentMain : FragmentBase<AppState>(R.layout.fragment_main) {
     private lateinit var recyclerView: RecyclerView
     private val compositeDisposable = CompositeDisposable()
     private val iterator = RetrofitImplementation()
+    private val router: Router by getKoin().inject()
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -71,7 +73,6 @@ class FragmentMain : FragmentBase<AppState>(R.layout.fragment_main) {
     }
 
     private fun initViewModel() {
-        injectDependencies()
         val model: ViewModelFragmentMain by viewModel()
         viewModel = model
     }
@@ -179,16 +180,8 @@ class FragmentMain : FragmentBase<AppState>(R.layout.fragment_main) {
 
     private val onItemClick = object : OnListenerItemClickAdapterMain {
         override fun onItemClick(dataModel: HistoryDataWord) {
-            activity?.let {
-                it.supportFragmentManager.beginTransaction()
-                    .addToBackStack(null)
-                    .add(
-                        R.id.container,
-                        FragmentDetailWord.newInstance(dataModel),
-                        FragmentDetailWord.TAG
-                    )
-                    .commit()
-            }
+            router.addFragmentToABackStack(FragmentDetailWord.newInstance(dataModel),
+                FragmentDetailWord.TAG)
         }
     }
 
