@@ -4,8 +4,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.androidapp.core.R
 import com.androidapp.model.data.AppState
-import com.androidapp.utils.FragmentAlertDialogNetWorkStatus
 import com.androidapp.utils.network.OnlineLiveData
+import com.androidapp.utils.ui.FragmentAlertDialogNetWorkStatus
 
 abstract class FragmentBase<T : AppState>(contentLayoutId: Int) : Fragment(contentLayoutId) {
 

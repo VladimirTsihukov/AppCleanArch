@@ -1,5 +1,6 @@
 package com.androidapp.appcleanarch.view.main.fragment.fragmentUI
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -22,6 +23,8 @@ import com.androidapp.repository.convertListDataModelOtEntity
 import com.androidapp.repository.datasource.retrofit.RetrofitImplementation
 import com.androidapp.repository.datasource.room.HistoryDataWord
 import com.androidapp.utils.network.OnlineLiveData
+import com.androidapp.utils.ui.viewById
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.play.core.splitinstall.SplitInstallManager
 import com.google.android.play.core.splitinstall.SplitInstallManagerFactory
@@ -53,6 +56,12 @@ class FragmentMain : FragmentBase<AppState>(R.layout.fragment_main) {
 
     private var isOnline: Boolean = true
 
+    private val searchFab by viewById<FloatingActionButton>(R.id.fub_btn_search)
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        activityMain = activity
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -63,7 +72,7 @@ class FragmentMain : FragmentBase<AppState>(R.layout.fragment_main) {
         recyclerView.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
         recyclerView.adapter = adapter
 
-        fub_btn_search.setOnClickListener {
+        searchFab.setOnClickListener {
             activityMain?.supportFragmentManager?.let { fragmentManager ->
                 FragmentDialogSearch.newInstance()
                     .show(fragmentManager, FragmentDialogSearch.TAG)
@@ -131,11 +140,6 @@ class FragmentMain : FragmentBase<AppState>(R.layout.fragment_main) {
                     Toast.LENGTH_SHORT)
                     .show()
             }
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        activityMain = activity
     }
 
     override fun renderData(appState: AppState) {

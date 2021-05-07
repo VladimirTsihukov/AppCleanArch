@@ -1,8 +1,9 @@
-package com.androidapp.utils
+package com.androidapp.utils.ui
 
 import android.app.Dialog
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatDialogFragment
+import com.androidapp.utils.getAlertDialog
 
 class FragmentAlertDialogNetWorkStatus : AppCompatDialogFragment() {
 
