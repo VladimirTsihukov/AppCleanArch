@@ -33,6 +33,7 @@ import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_main.*
 import kotlinx.android.synthetic.main.view_error.*
 import org.koin.android.ext.android.getKoin
+import org.koin.android.scope.currentScope
 import org.koin.android.viewmodel.ext.android.viewModel
 
 private const val HISTORY_FEATURE_NAME = "historyscreen"
@@ -96,7 +97,7 @@ class FragmentMain : FragmentBase<AppState>(R.layout.fragment_main) {
     }
 
     private fun initViewModel() {
-        val model: ViewModelFragmentMain by viewModel()
+        val model: ViewModelFragmentMain by currentScope.viewModel(this)
         viewModel = model
     }
 

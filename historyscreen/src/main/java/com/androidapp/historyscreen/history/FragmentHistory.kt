@@ -13,6 +13,7 @@ import com.androidapp.historyscreen.injectDependenciesHistory
 import com.androidapp.repository.datasource.room.HistoryDataWord
 import kotlinx.android.synthetic.main.fragment_history.*
 import org.koin.android.ext.android.getKoin
+import org.koin.android.scope.currentScope
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class FragmentHistory : Fragment(R.layout.fragment_history) {
@@ -41,7 +42,7 @@ class FragmentHistory : Fragment(R.layout.fragment_history) {
     private fun initViewModel() {
         injectDependenciesHistory()
 
-        val model: ViewModelFragmentHistory by viewModel()
+        val model: ViewModelFragmentHistory by currentScope.viewModel(this)
         viewModel = model
         viewModel.liveDataHistory.observe(viewLifecycleOwner, { liveData ->
             liveData?.let {
