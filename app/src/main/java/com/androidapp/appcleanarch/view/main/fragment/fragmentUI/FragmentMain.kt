@@ -1,6 +1,7 @@
 package com.androidapp.appcleanarch.view.main.fragment.fragmentUI
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -55,9 +56,16 @@ class FragmentMain : FragmentBase<AppState>(R.layout.fragment_main) {
     private val iterator = RetrofitImplementation()
     private val router: Router by getKoin().inject()
 
-    private var isOnline: Boolean = true
+    private var isOnline: Boolean = false
+    private val onlineLiveData: OnlineLiveData by lazy { OnlineLiveData(App.instance) }
 
     private val searchFab by viewById<FloatingActionButton>(R.id.fub_btn_search)
+
+    private val snackbar by lazy {
+        Snackbar.make(fragment_main_view,
+            R.string.dialog_title_device_is_offline,
+            Snackbar.LENGTH_INDEFINITE).setTextColor(Color.RED)
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -66,12 +74,13 @@ class FragmentMain : FragmentBase<AppState>(R.layout.fragment_main) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        isOnline = onlineLiveData.isNetworkAvailable()
+        snowSnackBarNetwork(isOnline)
+
         initViewModel()
         initToolBar()
-
-        recyclerView = view.findViewById(R.id.main_rec_view)
-        recyclerView.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
-        recyclerView.adapter = adapter
+        initRecView(view)
 
         searchFab.setOnClickListener {
             activityMain?.supportFragmentManager?.let { fragmentManager ->
@@ -84,16 +93,22 @@ class FragmentMain : FragmentBase<AppState>(R.layout.fragment_main) {
             renderData(it)
         })
 
-        activityMain?.let { fragmentActivity ->
-            OnlineLiveData(fragmentActivity).observe(viewLifecycleOwner, {
-                isOnline = it
-                if (!it) {
-                    Snackbar.make(fragment_main_view,
-                        R.string.dialog_title_device_is_offline,
-                        Snackbar.LENGTH_LONG)
-                }
+        activityMain?.let {
+            onlineLiveData.observe(viewLifecycleOwner, { online ->
+                isOnline = online
+                snowSnackBarNetwork(isOnline)
             })
         }
+    }
+
+    private fun initRecView(view: View) {
+        recyclerView = view.findViewById(R.id.main_rec_view)
+        recyclerView.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
+        recyclerView.adapter = adapter
+    }
+
+    private fun snowSnackBarNetwork (online : Boolean) {
+        if (!online) snackbar.show() else snackbar.dismiss()
     }
 
     private fun initViewModel() {

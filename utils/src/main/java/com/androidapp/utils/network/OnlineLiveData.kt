@@ -42,6 +42,8 @@ class OnlineLiveData (context: Context) : LiveData<Boolean>() {
         connectivityManager.unregisterNetworkCallback(callback)
     }
 
+    fun isNetworkAvailable() = connectivityManager.allNetworks.isNotEmpty()
+
     private fun update(online: Boolean) {
         if (online != value) {
             postValue(online)
