@@ -1,8 +1,10 @@
 package com.androidapp.appcleanarch.view.main.fragment.fragmentUI
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -40,6 +42,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
 private const val HISTORY_FEATURE_NAME = "historyscreen"
 private const val HISTORY_PACKAGE_NAME = "com.androidapp.historyscreen.history.FragmentHistory"
 private const val TAG_FRAGMENT_HISTORY = "FragmentHistory"
+private const val REG_CODE_SETTING = 789
 
 class FragmentMain : FragmentBase<AppState>(R.layout.fragment_main) {
 
@@ -63,8 +66,13 @@ class FragmentMain : FragmentBase<AppState>(R.layout.fragment_main) {
 
     private val snackbar by lazy {
         Snackbar.make(fragment_main_view,
-            R.string.dialog_title_device_is_offline,
-            Snackbar.LENGTH_INDEFINITE).setTextColor(Color.RED)
+            R.string.snackBar_title_device_is_offline,
+            Snackbar.LENGTH_INDEFINITE)
+            .setAction(R.string.dialog_button_yes) {
+                startActivityForResult(Intent(Settings.Panel.ACTION_INTERNET_CONNECTIVITY),
+                    REG_CODE_SETTING)
+            }
+            .setTextColor(Color.RED)
     }
 
     override fun onAttach(context: Context) {
@@ -107,7 +115,7 @@ class FragmentMain : FragmentBase<AppState>(R.layout.fragment_main) {
         recyclerView.adapter = adapter
     }
 
-    private fun snowSnackBarNetwork (online : Boolean) {
+    private fun snowSnackBarNetwork(online: Boolean) {
         if (!online) snackbar.show() else snackbar.dismiss()
     }
 
@@ -122,7 +130,12 @@ class FragmentMain : FragmentBase<AppState>(R.layout.fragment_main) {
             when (menuItem.itemId) {
                 R.id.menu_fragment_main_history -> {
                     splitManager()
-                    return@setOnMenuItemClickListener true
+                    true
+                }
+                R.id.menu_fragment_main_setting -> {
+                    startActivityForResult(Intent(Settings.Panel.ACTION_INTERNET_CONNECTIVITY),
+                        REG_CODE_SETTING)
+                    true
                 }
                 else -> true
             }

@@ -1,8 +1,8 @@
 package com.androidapp.appcleanarch.view.main.activity
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
-import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.androidapp.appcleanarch.R
@@ -138,7 +138,18 @@ class ActivityMain : AppCompatActivity() {
         }
     }
 
-    fun getIdContainer(): Int = findViewById<FrameLayout>(R.id.container).id
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        when(newConfig.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+            Configuration.UI_MODE_NIGHT_NO -> {
+                Toast.makeText(this, "No night mode", Toast.LENGTH_SHORT).show()
+            }
+            Configuration.UI_MODE_NIGHT_YES -> {
+                Toast.makeText(this, "Yes night mode", Toast.LENGTH_SHORT).show()
+            }
+            else -> Unit
+        }
+    }
 
     override fun onDestroy() {
         router.activity = null

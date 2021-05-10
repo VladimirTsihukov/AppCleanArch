@@ -13,7 +13,10 @@
         android:supportsRtl="true"
         android:name=".App"
         android:theme="@style/Theme.AppCleanArch">
-        <activity android:name=".view.main.activity.ActivityMain">
+        <activity
+            android:name=".view.main.activity.ActivityMain"
+            android:configChanges="uiMode"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

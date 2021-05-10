@@ -16,4 +16,5 @@
     <string name="word">Word</string>
     <string name="history_word">History word</string>
     <string name="title_historyscreen">History Screen Feature</string>
+    <string name="menu_title_setting">Setting</string>
 </resources>
