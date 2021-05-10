@@ -15,15 +15,15 @@
         app:layout_constraintTop_toTopOf="parent"
         app:title="@string/word_description" />
 
-    <androidx.appcompat.widget.AppCompatImageView
+    <com.androidapp.utils.ui.EquilateralImageView
         android:id="@+id/img_word"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_margin="@dimen/margin_small"
         android:scaleType="centerInside"
         android:src="@drawable/ic_video"
-        app:layout_constraintDimensionRatio="h, 2:1"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tool_bar_fragment_detail" />
 
     <androidx.appcompat.widget.AppCompatTextView

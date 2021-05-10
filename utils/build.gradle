@@ -2,10 +2,11 @@ plugins {
     id 'com.android.library'
     id 'kotlin-android-extensions'
     id 'kotlin-android'
+    id 'kotlin-kapt'
 }
 
-
 dependencies {
+
     implementation Kotlin.core
 
     implementation Design.appcompat

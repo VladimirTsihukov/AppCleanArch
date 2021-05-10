@@ -2,10 +2,10 @@ package com.androidapp.core.base
 
 import androidx.fragment.app.Fragment
 import com.androidapp.model.data.AppState
-import com.androidapp.utils.FragmentAlertDialogNetWorkStatus
-import com.androidapp.utils.network.isOnline
+import com.androidapp.utils.network.OnlineLiveData
+import com.androidapp.utils.ui.FragmentAlertDialogNetWorkStatus
 
-abstract class FragmentBase<T: AppState>(contentLayoutId: Int) : Fragment(contentLayoutId) {
+abstract class FragmentBase<T : AppState>(contentLayoutId: Int) : Fragment(contentLayoutId) {
 
     abstract val viewModel: ViewModelBase<T>
 
@@ -13,18 +13,20 @@ abstract class FragmentBase<T: AppState>(contentLayoutId: Int) : Fragment(conten
 
     abstract fun renderData(appState: AppState)
 
-    override fun onResume() {
-        super.onResume()
-        activity?.let {
-            isNetWorkState = isOnline(it)
-            if (!isNetWorkState && isDialogNull()) {
-                showAlertDialog()
-            }
+    private fun subscribeToNetWorkChange() {
+        activity?.let { contextActivity ->
+            OnlineLiveData(contextActivity).observe(viewLifecycleOwner, {
+                isNetWorkState = it
+                if (!isNetWorkState) {
+                    showAlertDialog()
+                }
+            })
         }
     }
 
     protected fun showAlertDialog() {
-        FragmentAlertDialogNetWorkStatus.newInstance().show(childFragmentManager, FragmentAlertDialogNetWorkStatus.TAG)
+        FragmentAlertDialogNetWorkStatus.newInstance()
+            .show(childFragmentManager, FragmentAlertDialogNetWorkStatus.TAG)
     }
 
     private fun isDialogNull(): Boolean {

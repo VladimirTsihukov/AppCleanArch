@@ -1,5 +1,7 @@
 package com.androidapp.appcleanarch.view.main.fragment.fragmentUI
 
+import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -21,7 +23,10 @@ import com.androidapp.model.data.AppState
 import com.androidapp.repository.convertListDataModelOtEntity
 import com.androidapp.repository.datasource.retrofit.RetrofitImplementation
 import com.androidapp.repository.datasource.room.HistoryDataWord
-import com.androidapp.utils.network.isOnline
+import com.androidapp.utils.network.OnlineLiveData
+import com.androidapp.utils.ui.viewById
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.play.core.splitinstall.SplitInstallManager
 import com.google.android.play.core.splitinstall.SplitInstallManagerFactory
 import com.google.android.play.core.splitinstall.SplitInstallRequest
@@ -29,6 +34,7 @@ import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_main.*
 import kotlinx.android.synthetic.main.view_error.*
 import org.koin.android.ext.android.getKoin
+import org.koin.android.scope.currentScope
 import org.koin.android.viewmodel.ext.android.viewModel
 
 private const val HISTORY_FEATURE_NAME = "historyscreen"
@@ -50,17 +56,33 @@ class FragmentMain : FragmentBase<AppState>(R.layout.fragment_main) {
     private val iterator = RetrofitImplementation()
     private val router: Router by getKoin().inject()
 
+    private var isOnline: Boolean = false
+    private val onlineLiveData: OnlineLiveData by lazy { OnlineLiveData(App.instance) }
+
+    private val searchFab by viewById<FloatingActionButton>(R.id.fub_btn_search)
+
+    private val snackbar by lazy {
+        Snackbar.make(fragment_main_view,
+            R.string.dialog_title_device_is_offline,
+            Snackbar.LENGTH_INDEFINITE).setTextColor(Color.RED)
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        activityMain = activity
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        isOnline = onlineLiveData.isNetworkAvailable()
+        snowSnackBarNetwork(isOnline)
+
         initViewModel()
         initToolBar()
+        initRecView(view)
 
-        recyclerView = view.findViewById(R.id.main_rec_view)
-        recyclerView.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
-        recyclerView.adapter = adapter
-
-        fub_btn_search.setOnClickListener {
+        searchFab.setOnClickListener {
             activityMain?.supportFragmentManager?.let { fragmentManager ->
                 FragmentDialogSearch.newInstance()
                     .show(fragmentManager, FragmentDialogSearch.TAG)
@@ -70,10 +92,27 @@ class FragmentMain : FragmentBase<AppState>(R.layout.fragment_main) {
         viewModel.subscriberLiveData().observe(viewLifecycleOwner, {
             renderData(it)
         })
+
+        activityMain?.let {
+            onlineLiveData.observe(viewLifecycleOwner, { online ->
+                isOnline = online
+                snowSnackBarNetwork(isOnline)
+            })
+        }
+    }
+
+    private fun initRecView(view: View) {
+        recyclerView = view.findViewById(R.id.main_rec_view)
+        recyclerView.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
+        recyclerView.adapter = adapter
+    }
+
+    private fun snowSnackBarNetwork (online : Boolean) {
+        if (!online) snackbar.show() else snackbar.dismiss()
     }
 
     private fun initViewModel() {
-        val model: ViewModelFragmentMain by viewModel()
+        val model: ViewModelFragmentMain by currentScope.viewModel(this)
         viewModel = model
     }
 
@@ -119,11 +158,6 @@ class FragmentMain : FragmentBase<AppState>(R.layout.fragment_main) {
             }
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        activityMain = activity
-    }
-
     override fun renderData(appState: AppState) {
         when (appState) {
             is AppState.Success -> {
@@ -156,7 +190,7 @@ class FragmentMain : FragmentBase<AppState>(R.layout.fragment_main) {
         showViewError()
         tv_error.text = error ?: getString(R.string.undefined_error)
         btn_reload.setOnClickListener {
-            viewModel.getData("hi", isOnline(App.instance.applicationContext))
+            viewModel.getData("hi", isOnline)
         }
     }
 
@@ -187,8 +221,8 @@ class FragmentMain : FragmentBase<AppState>(R.layout.fragment_main) {
 
     fun searchClickInFragmentDialog(word: String) {
         activityMain?.let {
-            if (isOnline(it)) {
-                viewModel.getData(word, isOnline(App.instance.applicationContext))
+            if (isOnline) {
+                viewModel.getData(word, isOnline)
             } else {
                 showAlertDialog()
             }
